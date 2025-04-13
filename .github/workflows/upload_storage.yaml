@@ -2,7 +2,7 @@ name: upload-files-to-S3
 on:
   push:
 jobs:
-  upload-sample.txt:
+  upload-sample-file:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
