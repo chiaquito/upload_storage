@@ -13,4 +13,4 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
       - name: Upload to S3
-        run: aws s3 sample.txt cp s3://${{ secrets.BUCKET_NAME }}
+        run: aws s3 cp sample.txt s3://${{ secrets.BUCKET_NAME }}
