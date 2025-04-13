@@ -1,0 +1,16 @@
+name: upload-files-to-S3
+on:
+  push:
+jobs:
+  upload-sample.txt:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+      - name: Upload to S3
+        run: aws s3 sample.txt cp s3://${{ secrets.BUCKET_NAME }}
