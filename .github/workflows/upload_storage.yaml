@@ -4,7 +4,10 @@ on:
 jobs:
   upload-sample-file-prod:
     runs-on: ubuntu-latest
-    environment: prod
+    environment: 
+      name: ${{ github.ref_name == 'main' && 'production' || github.ref_name == 'develop' && 'develop' || 'others' }}
+    env:
+      TZ: 'Asia/Tokyo'
     permissions:
       id-token: write
       contents: read
@@ -17,21 +20,4 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
       - name: Upload to S3
-        run: aws s3 cp sample.txt s3://${{ secrets.BUCKET_NAME }}/${{ secrets.BUCKET_DIR }}/sample_${{ github.sha }}.txt
-
-  upload-sample-file-develop:
-    runs-on: ubuntu-latest
-    environment: develop
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - name: Checkout code to treat files
-        uses: actions/checkout@v2
-      - name: Set up AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-region: ${{ secrets.AWS_REGION }}
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-      - name: Upload to S3
-        run: aws s3 cp sample.txt s3://${{ secrets.BUCKET_NAME }}/${{ secrets.BUCKET_DIR }}/sample_${{ github.sha }}.txt
+        run: aws s3 cp sample.txt s3://${{ secrets.BUCKET_NAME }}/${{ secrets.BUCKET_DIR }}/$(date +'%Y-%m-%d_%H-%M-%S')/sample_${{ github.sha }}.txt
