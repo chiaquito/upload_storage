@@ -23,9 +23,9 @@ jobs:
             exit 1
           fi
       - name: Checkout code to treat files
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Set up AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-region: ${{ secrets.AWS_REGION }}
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
