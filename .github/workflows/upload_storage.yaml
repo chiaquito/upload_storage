@@ -2,7 +2,7 @@ name: upload-files-to-S3
 on:
   push:
 jobs:
-  upload-sample-file-prod:
+  upload-sample-file:
     runs-on: ubuntu-latest
     environment: 
       name: ${{ github.ref_name == 'main' && 'production' || github.ref_name == 'develop' && 'develop' || 'others' }}
@@ -12,6 +12,12 @@ jobs:
       id-token: write
       contents: read
     steps:
+      - name: Check Secrets are available
+        run: |
+          if [ -z "${{ secrets.AWS_REGION }}" ]; then
+            echo "AWS_REGION is empty"
+            exit 1
+          fi
       - name: Checkout code to treat files
         uses: actions/checkout@v2
       - name: Set up AWS Credentials
