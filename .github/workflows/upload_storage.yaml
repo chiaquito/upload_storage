@@ -18,6 +18,10 @@ jobs:
             echo "AWS_REGION is empty"
             exit 1
           fi
+          if [ -z "${{ secrets.AWS_ROLE_TO_ASSUME }}" ]; then
+            echo "AWS_ROLE_TO_ASSUME is empty"
+            exit 1
+          fi
       - name: Checkout code to treat files
         uses: actions/checkout@v2
       - name: Set up AWS Credentials
